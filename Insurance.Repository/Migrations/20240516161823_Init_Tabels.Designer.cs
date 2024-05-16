@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Insurance.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240516131200_Inital_Migration")]
-    partial class InitalMigration
+    [Migration("20240516161823_Init_Tabels")]
+    partial class InitTabels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,40 @@ namespace Insurance.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Insurance.Domain.Model.CustomerApplication", b =>
+            modelBuilder.Entity("CustomerApplicationDiagnosisCode", b =>
                 {
-                    b.Property<int>("NationalID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("CustomerNationalID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DiagnosesCodeId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NationalID"));
+                    b.HasKey("CustomerNationalID", "DiagnosesCodeId");
+
+                    b.HasIndex("DiagnosesCodeId");
+
+                    b.ToTable("CustomerApplicationDiagnosisCode");
+                });
+
+            modelBuilder.Entity("CustomerApplicationPrescribedItem", b =>
+                {
+                    b.Property<string>("CustomerNationalID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PrescribedItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerNationalID", "PrescribedItemId");
+
+                    b.HasIndex("PrescribedItemId");
+
+                    b.ToTable("CustomerApplicationPrescribedItem");
+                });
+
+            modelBuilder.Entity("Insurance.Domain.Model.CustomerApplication", b =>
+                {
+                    b.Property<string>("CustomerNationalID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AttachmentId")
                         .HasColumnType("int");
@@ -46,31 +73,32 @@ namespace Insurance.Repository.Migrations
                     b.Property<int>("InsuranceCompanyId")
                         .HasColumnType("int");
 
-                    b.HasKey("NationalID");
+                    b.HasKey("CustomerNationalID");
 
                     b.HasIndex("AttachmentId");
 
-                    b.ToTable("customerApplications");
+                    b.ToTable("CustomerApplications");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.DiagnosesCode", b =>
                 {
-                    b.Property<Guid>("Code")
+                    b.Property<int>("DiagnosesCodeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("CustomerApplicationNationalID")
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiagnosesCodeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Code");
+                    b.HasKey("DiagnosesCodeId");
 
-                    b.HasIndex("CustomerApplicationNationalID");
-
-                    b.ToTable("diagnosesCodes");
+                    b.ToTable("DiagnosesCodes");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.InsuranceCompany", b =>
@@ -87,19 +115,16 @@ namespace Insurance.Repository.Migrations
 
                     b.HasKey("InsuranceCompanyId");
 
-                    b.ToTable("insuranceCompanies");
+                    b.ToTable("InsuranceCompanies");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.PrescribedItem", b =>
                 {
-                    b.Property<int>("ItemId")
+                    b.Property<int>("PrescribedItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
-
-                    b.Property<int?>("CustomerApplicationNationalID")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrescribedItemId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -119,11 +144,9 @@ namespace Insurance.Repository.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemId");
+                    b.HasKey("PrescribedItemId");
 
-                    b.HasIndex("CustomerApplicationNationalID");
-
-                    b.ToTable("prescribedItems");
+                    b.ToTable("PrescribedItems");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.PrescriptionAttachment", b =>
@@ -142,12 +165,39 @@ namespace Insurance.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NationalID")
-                        .HasColumnType("int");
-
                     b.HasKey("AttachmentId");
 
-                    b.ToTable("prescriptionAttachments");
+                    b.ToTable("PrescriptionAttachments");
+                });
+
+            modelBuilder.Entity("CustomerApplicationDiagnosisCode", b =>
+                {
+                    b.HasOne("Insurance.Domain.Model.CustomerApplication", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerNationalID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Insurance.Domain.Model.DiagnosesCode", null)
+                        .WithMany()
+                        .HasForeignKey("DiagnosesCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CustomerApplicationPrescribedItem", b =>
+                {
+                    b.HasOne("Insurance.Domain.Model.CustomerApplication", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerNationalID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Insurance.Domain.Model.PrescribedItem", null)
+                        .WithMany()
+                        .HasForeignKey("PrescribedItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.CustomerApplication", b =>
@@ -159,27 +209,6 @@ namespace Insurance.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Attachment");
-                });
-
-            modelBuilder.Entity("Insurance.Domain.Model.DiagnosesCode", b =>
-                {
-                    b.HasOne("Insurance.Domain.Model.CustomerApplication", null)
-                        .WithMany("DiagnosesCodes")
-                        .HasForeignKey("CustomerApplicationNationalID");
-                });
-
-            modelBuilder.Entity("Insurance.Domain.Model.PrescribedItem", b =>
-                {
-                    b.HasOne("Insurance.Domain.Model.CustomerApplication", null)
-                        .WithMany("PrescribedItems")
-                        .HasForeignKey("CustomerApplicationNationalID");
-                });
-
-            modelBuilder.Entity("Insurance.Domain.Model.CustomerApplication", b =>
-                {
-                    b.Navigation("DiagnosesCodes");
-
-                    b.Navigation("PrescribedItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,9 +10,4 @@
     <ProjectReference Include="..\Insurance.Repository\Insurance.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\Implementation\" />
-    <Folder Include="Service\Interface\" />
-  </ItemGroup>
-
 </Project>
