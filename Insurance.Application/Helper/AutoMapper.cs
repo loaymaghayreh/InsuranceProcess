@@ -20,6 +20,10 @@ namespace Insurance.Application.Helper
            .ForMember(dest => dest.CustomerApplicationDiagnosesCodes, opt => opt.MapFrom(src => src.DiagnosesCodes.Select(code => new CustomerApplicationDiagnosesCode { DiagnosesCodeId = code })))
            .ForMember(dest => dest.CustomerApplicationPrescribedItems, opt => opt.MapFrom(src => src.PrescribedItems.Select(item => new CustomerApplicationPrescribedItem { PrescribedItemId = item })));
 
+            CreateMap<InsuranceCompany, InsuranceCompanyDto>().ReverseMap();
+            CreateMap<PrescribedItem, PrescribedItemDto>().ReverseMap();
+            CreateMap<DiagnosesCode, DiagnosesCodeDto>().ReverseMap();
+
         }
     }
 }

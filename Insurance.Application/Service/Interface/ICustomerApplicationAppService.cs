@@ -9,6 +9,9 @@ namespace Insurance.Application.Service.Interface
 {
     public interface ICustomerApplicationAppService
     {
-        public Task CreateCustomerInsuranceApplicationAsync(CustomerApplicationDto customerApplicationDto);
+        Task CreateCustomerInsuranceApplicationAsync(CustomerApplicationDto customerApplicationDto);
+        Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompaniesListAsync();
+        Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodesListAsync();
+        Task<IEnumerable<PrescribedItemDto>> GetPrescribedItemsListAsync();
     }
 }

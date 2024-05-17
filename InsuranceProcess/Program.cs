@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICustomerApplicationAppService, CustomerApplicationAppService>();
-builder.Services.AddScoped<ICustomerApplicationRepository, CustomerApplicationRepository>();
+builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection")));

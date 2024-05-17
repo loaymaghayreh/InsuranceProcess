@@ -1,5 +1,6 @@
 ﻿using Insurance.Application.Service.Interface;
 using Insurance.Domain.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,11 @@ namespace InsuranceProcess.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CustomerInsuranceApplication : ControllerBase
+    [Authorize]
+    public class CustomerInsuranceApplicationController : ControllerBase
     {
         private ICustomerApplicationAppService _customerApplicationAppService;
-        public CustomerInsuranceApplication(ICustomerApplicationAppService customerApplicationAppService)
+        public CustomerInsuranceApplicationController(ICustomerApplicationAppService customerApplicationAppService)
         {
             _customerApplicationAppService = customerApplicationAppService;
         }
@@ -33,6 +35,23 @@ namespace InsuranceProcess.Controllers
             {
                 return StatusCode(500, "An error occurred while processing your request.");
             }
+        }
+        [HttpGet("GetInsuranceCompanies")]
+        public async Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompanies()
+        {
+            return await _customerApplicationAppService.GetInsuranceCompaniesListAsync();
+        }
+
+        [HttpGet("GetDiagnosesCodes")]
+        public async Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodes()
+        {
+            return await _customerApplicationAppService.GetDiagnosesCodesListAsync();
+        }
+
+        [HttpGet("GetPrescribedItems")]
+        public async Task<IEnumerable<PrescribedItemDto>> GetPrescribedItems()
+        {
+            return await _customerApplicationAppService.GetPrescribedItemsListAsync();
         }
     }
 }

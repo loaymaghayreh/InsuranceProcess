@@ -3,6 +3,7 @@ using Insurance.Application.Service.Interface;
 using Insurance.Domain.Dto;
 using Insurance.Domain.Interface;
 using Insurance.Domain.Model;
+using Insurance.Repository.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,22 @@ namespace Insurance.Application.Service.Implementation
 {
     public class CustomerApplicationAppService : ICustomerApplicationAppService
     {
-        private ICustomerApplicationRepository _insuranceRepository;
+        private readonly IBaseRepository<CustomerApplication> _insuranceApplicationRepository;
+        private readonly IBaseRepository<InsuranceCompany> _companiesRepository;
+        private readonly IBaseRepository<DiagnosesCode> _diagnosesCodeRepository;
+        private readonly IBaseRepository<PrescribedItem> _prescribedItemRepository;
         private readonly IMapper _mapper;
-        public CustomerApplicationAppService(ICustomerApplicationRepository insuranceRepository, IMapper mapper)
+        public CustomerApplicationAppService(
+            IBaseRepository<CustomerApplication> insuranceApplicationRepository,
+            IBaseRepository<InsuranceCompany> companiesRepository,
+            IBaseRepository<DiagnosesCode> diagnosesCodeRepository,
+            IBaseRepository<PrescribedItem> prescribedItemRepository,
+            IMapper mapper)
         {
-            _insuranceRepository = insuranceRepository;
+            _insuranceApplicationRepository = insuranceApplicationRepository;
+            _companiesRepository = companiesRepository;
+            _diagnosesCodeRepository = diagnosesCodeRepository;
+            _prescribedItemRepository = prescribedItemRepository;
             _mapper = mapper;
         }
 
@@ -26,8 +38,26 @@ namespace Insurance.Application.Service.Implementation
 
             var customerApplication = _mapper.Map<CustomerApplication>(customerApplicationDto);
 
-            await _insuranceRepository.AddAsync(customerApplication);
+            await _insuranceApplicationRepository.AddAsync(customerApplication);
 
+        }
+
+        public async Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompaniesListAsync()
+        {
+            var insuranceCompanies = await _companiesRepository.GetAllAsync();
+            return _mapper.Map<List<InsuranceCompanyDto>>(insuranceCompanies);        
+        }
+
+        public async Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodesListAsync()
+        {
+            var diagnosesCodes = await _diagnosesCodeRepository.GetAllAsync();
+            return _mapper.Map<List<DiagnosesCodeDto>>(diagnosesCodes);
+        }
+
+        public async Task<IEnumerable<PrescribedItemDto>> GetPrescribedItemsListAsync()
+        {
+            var prescribedItems = await _prescribedItemRepository.GetAllAsync();
+            return _mapper.Map<List<PrescribedItemDto>>(prescribedItems);
         }
     }
 }
