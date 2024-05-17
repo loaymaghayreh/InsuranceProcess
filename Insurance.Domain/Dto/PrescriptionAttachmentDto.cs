@@ -8,8 +8,7 @@ namespace Insurance.Domain.Dto
 {
     public class PrescriptionAttachmentDto
     {
-        public int NationalID { get; set; }
-        public string FileName { get; set; }
-        public byte[] FileContent { get; set; }
+        public string? FileName { get; set; }
+        public byte[]? FileContent { get; set; }
     }
 }

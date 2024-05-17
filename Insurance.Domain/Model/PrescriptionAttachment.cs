@@ -11,7 +11,7 @@ namespace Insurance.Domain.Model
     {
         [Key]
         public int AttachmentId { get; set; }
-        public string FileName { get; set; }
-        public byte[] FileContent { get; set; }
+        public string? FileName { get; set; }
+        public byte[]? FileContent { get; set; }
     }
 }

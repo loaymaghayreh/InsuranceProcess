@@ -8,6 +8,7 @@ namespace Insurance.Domain.Dto
 {
     public class PrescribedItemDto
     {
+        public int PrescribedItemId { get; set; }
         public string ItemNumber { get; set; }
         public string Description { get; set; }
         public int Quantity { get; set; }

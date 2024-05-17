@@ -13,6 +13,6 @@ namespace Insurance.Domain.Model
         public int DiagnosesCodeId { get; set; }
         public string Code { get; set; }
         public string Discription { get; set; }
-        public virtual ICollection<CustomerApplication> CustomerApplications { get; set; } = new List<CustomerApplication>();
+        public virtual ICollection<CustomerApplicationDiagnosesCode> CustomerApplicationDiagnosesCodes { get; set; } = new List<CustomerApplicationDiagnosesCode>();
     }
 }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Insurance.Application.Service.Interface
 {
-    public interface IInsuranceAppService
+    public interface ICustomerApplicationAppService
     {
-        public Task CreateCustomerInsuranceApplication(CustomerApplicationDto customerApplicationDto);
+        public Task CreateCustomerInsuranceApplicationAsync(CustomerApplicationDto customerApplicationDto);
     }
 }

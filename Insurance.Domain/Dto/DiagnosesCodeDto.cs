@@ -8,7 +8,7 @@ namespace Insurance.Domain.Dto
 {
     public class DiagnosesCodeDto
     {
-        public int Id { get; set; }
+        public int DiagnosesCodeId { get; set; }
         public string Code { get; set; }
         public string Discription { get; set; }
     }

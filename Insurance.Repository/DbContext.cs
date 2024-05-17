@@ -25,29 +25,42 @@ namespace Insurance.Repository
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CustomerApplication>()
-                .HasMany(c => c.DiagnosesCodes)
-                .WithMany(d => d.CustomerApplications)
-                .UsingEntity<Dictionary<string, object>>(
-                    "CustomerApplicationDiagnosisCode", 
-                    j => j.HasOne<DiagnosesCode>().WithMany().HasForeignKey("DiagnosesCodeId"),
-                    j => j.HasOne<CustomerApplication>().WithMany().HasForeignKey("CustomerNationalID"),
-                    j =>
-                    {
-                        j.HasKey("CustomerNationalID", "DiagnosesCodeId");
-                    });
+            //DiagnosesCode
+            modelBuilder.Entity<CustomerApplicationDiagnosesCode>()
+                .HasKey(c => new { c.CustomerApplicationId, c.DiagnosesCodeId });
 
+            modelBuilder.Entity<CustomerApplicationDiagnosesCode>()
+                .HasOne(c => c.CustomerApplication)
+                .WithMany(ca => ca.CustomerApplicationDiagnosesCodes)
+                .HasForeignKey(c => c.CustomerApplicationId);
+
+            modelBuilder.Entity<CustomerApplicationDiagnosesCode>()
+                .HasOne(c => c.DiagnosesCode)
+                .WithMany(dc => dc.CustomerApplicationDiagnosesCodes)
+                .HasForeignKey(c => c.DiagnosesCodeId);
+
+
+            //PrescribedItem
+            modelBuilder.Entity<CustomerApplicationPrescribedItem>()
+                .HasKey(c => new { c.CustomerApplicationId, c.PrescribedItemId });
+
+            modelBuilder.Entity<CustomerApplicationPrescribedItem>()
+                .HasOne(c => c.CustomerApplication)
+                .WithMany(ca => ca.CustomerApplicationPrescribedItems)
+                .HasForeignKey(c => c.CustomerApplicationId);
+
+            modelBuilder.Entity<CustomerApplicationPrescribedItem>()
+                .HasOne(c => c.PrescribedItem)
+                .WithMany(pi => pi.CustomerApplicationPrescribedItems)
+                .HasForeignKey(c => c.PrescribedItemId);
+
+
+            //Attachment
             modelBuilder.Entity<CustomerApplication>()
-                .HasMany(c => c.PrescribedItems)
-                .WithMany(p => p.CustomerApplications)
-                .UsingEntity<Dictionary<string, object>>(
-                    "CustomerApplicationPrescribedItem", 
-                    j => j.HasOne<PrescribedItem>().WithMany().HasForeignKey("PrescribedItemId"),
-                    j => j.HasOne<CustomerApplication>().WithMany().HasForeignKey("CustomerNationalID"),
-                    j =>
-                    {
-                        j.HasKey("CustomerNationalID", "PrescribedItemId"); 
-                    });
+                .HasOne(e => e.Attachment)
+                .WithOne()
+                .HasForeignKey<PrescriptionAttachment>(e => e.AttachmentId)
+                .IsRequired(false);
         }
     }
 }

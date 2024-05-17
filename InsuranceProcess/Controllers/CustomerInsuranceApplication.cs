@@ -6,35 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace InsuranceProcess.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class CustomerInsuranceApplication : Controller
+    [Route("api/[controller]")]
+    public class CustomerInsuranceApplication : ControllerBase
     {
-        public IInsuranceAppService _insuranceAppService;
-        public CustomerInsuranceApplication(IInsuranceAppService insuranceAppService)
+        private ICustomerApplicationAppService _customerApplicationAppService;
+        public CustomerInsuranceApplication(ICustomerApplicationAppService customerApplicationAppService)
         {
-            _insuranceAppService = insuranceAppService;
+            _customerApplicationAppService = customerApplicationAppService;
         }
 
-        [HttpPost]
-        public IActionResult CreateCustomerInsuranceApplication([FromBody] CustomerApplicationDto applicationDto)
+        [HttpPost("SaveInsuranceForm")]
+        public async Task<IActionResult> CreateCustomerInsuranceApplication([FromBody] CustomerApplicationDto applicationDto)
         {
+            //use Gard Helper 
             if (!ModelState.IsValid)
             {
-                // Return bad request if model state is invalid
                 return BadRequest(ModelState);
             }
 
             try
             {
-                // Assuming your service layer handles the conversion from DTO to domain model and persists it
-                _insuranceAppService.CreateCustomerInsuranceApplication(applicationDto);
-
-                // You might want to return a specific object or just a success status code
+                await _customerApplicationAppService.CreateCustomerInsuranceApplicationAsync(applicationDto);
                 return Ok("Customer application created successfully.");
             }
             catch (System.Exception ex)
             {
-                // Log the exception details here
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }

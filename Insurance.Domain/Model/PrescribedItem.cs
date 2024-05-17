@@ -16,6 +16,6 @@ namespace Insurance.Domain.Model
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public string Dosage { get; set; }
-        public virtual ICollection<CustomerApplication> CustomerApplications { get; set; } = new List<CustomerApplication>();
+        public virtual ICollection<CustomerApplicationPrescribedItem> CustomerApplicationPrescribedItems { get; set; } = new List<CustomerApplicationPrescribedItem>();
     }
 }
