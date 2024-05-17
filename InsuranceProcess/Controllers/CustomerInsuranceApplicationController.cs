@@ -18,7 +18,7 @@ namespace InsuranceProcess.Controllers
         }
 
         [HttpPost("SaveInsuranceForm")]
-        public async Task<IActionResult> CreateCustomerInsuranceApplication([FromBody] CustomerApplicationDto applicationDto)
+        public async Task<IActionResult> CreateCustomerInsuranceApplicationAsync([FromBody] CustomerApplicationDto applicationDto)
         {
             //use Gard Helper 
             if (!ModelState.IsValid)
@@ -37,19 +37,19 @@ namespace InsuranceProcess.Controllers
             }
         }
         [HttpGet("GetInsuranceCompanies")]
-        public async Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompanies()
+        public async Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompaniesAsync()
         {
             return await _customerApplicationAppService.GetInsuranceCompaniesListAsync();
         }
 
         [HttpGet("GetDiagnosesCodes")]
-        public async Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodes()
+        public async Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodesAsync()
         {
             return await _customerApplicationAppService.GetDiagnosesCodesListAsync();
         }
 
         [HttpGet("GetPrescribedItems")]
-        public async Task<IEnumerable<PrescribedItemDto>> GetPrescribedItems()
+        public async Task<IEnumerable<PrescribedItemDto>> GetPrescribedItemsAsync()
         {
             return await _customerApplicationAppService.GetPrescribedItemsListAsync();
         }
