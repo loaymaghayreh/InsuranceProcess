@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Insurance.Application.Dto;
 using Insurance.Application.Service.Interface;
-using Insurance.Domain.Dto;
 using Insurance.Domain.Interface;
 using Insurance.Domain.Model;
 using Insurance.Repository.Repository;
@@ -35,28 +35,26 @@ namespace Insurance.Application.Service.Implementation
 
         public async Task CreateCustomerInsuranceApplicationAsync(CustomerApplicationDto customerApplicationDto)
         {
-
             var customerApplication = _mapper.Map<CustomerApplication>(customerApplicationDto);
 
             await _insuranceApplicationRepository.AddAsync(customerApplication);
-
         }
 
         public async Task<IEnumerable<InsuranceCompanyDto>> GetInsuranceCompaniesListAsync()
         {
-            var insuranceCompanies = await _companiesRepository.GetAllAsync();
+            var insuranceCompanies = await _companiesRepository.GetAllForReadingAsync();
             return _mapper.Map<List<InsuranceCompanyDto>>(insuranceCompanies);        
         }
 
         public async Task<IEnumerable<DiagnosesCodeDto>> GetDiagnosesCodesListAsync()
         {
-            var diagnosesCodes = await _diagnosesCodeRepository.GetAllAsync();
+            var diagnosesCodes = await _diagnosesCodeRepository.GetAllForReadingAsync();
             return _mapper.Map<List<DiagnosesCodeDto>>(diagnosesCodes);
         }
 
         public async Task<IEnumerable<PrescribedItemDto>> GetPrescribedItemsListAsync()
         {
-            var prescribedItems = await _prescribedItemRepository.GetAllAsync();
+            var prescribedItems = await _prescribedItemRepository.GetAllForReadingAsync();
             return _mapper.Map<List<PrescribedItemDto>>(prescribedItems);
         }
     }

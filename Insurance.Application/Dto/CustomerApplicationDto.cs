@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Domain.Dto
+namespace Insurance.Application.Dto
 {
     public class CustomerApplicationDto
     {

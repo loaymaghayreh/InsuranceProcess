@@ -16,14 +16,14 @@ namespace InsuranceProcess.Controllers
             _authService = authService;
         }
 
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto loginDto)
+        [HttpPost("Token")]
+        public IActionResult GetToken([FromBody] LoginDto loginDto)
         {
             // Validate user credentials (this example uses hardcoded validation)
-            if (loginDto.UserName == "test" && loginDto.Password == "password")
+            if (loginDto.UserName == "admin" && loginDto.Password == "admin@123")
             {
                 var token = _authService.GenerateJwtToken(loginDto.UserName);
-                return Ok(new { token });
+                return Ok(new { token = "Bearer " + token });
             }
 
             return Unauthorized();

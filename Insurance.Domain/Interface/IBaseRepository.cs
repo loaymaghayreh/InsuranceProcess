@@ -13,5 +13,6 @@ namespace Insurance.Domain.Interface
         Task AddAsync(T t);
         Task UpdateAsync(T t);
         Task<List<T>> GetAllAsync();
+        Task<List<T>> GetAllForReadingAsync();
     }
 }

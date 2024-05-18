@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Domain.Dto
+namespace Insurance.Application.Dto
 {
     public class InsuranceCompanyDto
     {
-        public int InsuranceCompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

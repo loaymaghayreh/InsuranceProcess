@@ -14,12 +14,9 @@ namespace Insurance.Repository.Repository
     {
 
         private readonly AppDbContext _context;
-        private readonly ILogger<T> _logger;
-
         public BaseRepository(AppDbContext context, ILogger<T> logger)
         {
             _context = context;
-            _logger = logger;
         }
         public async Task<T> GetByIdAsync(int id)
         {
@@ -42,6 +39,11 @@ namespace Insurance.Repository.Repository
         public async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task<List<T>> GetAllForReadingAsync()
+        {
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Insurance.Domain.Model
     public class DiagnosesCode
     {
         [Key]
-        public int DiagnosesCodeId { get; set; }
+        public int Id { get; set; }
         public string Code { get; set; }
-        public string Discription { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<CustomerApplicationDiagnosesCode> CustomerApplicationDiagnosesCodes { get; set; } = new List<CustomerApplicationDiagnosesCode>();
     }
 }

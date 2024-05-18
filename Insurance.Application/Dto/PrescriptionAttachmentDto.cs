@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Domain.Dto
+namespace Insurance.Application.Dto
 {
     public class PrescriptionAttachmentDto
     {
         public string? FileName { get; set; }
-        public byte[]? FileContent { get; set; }
+        public string? FileContent { get; set; }
     }
 }

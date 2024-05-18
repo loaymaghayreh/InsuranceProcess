@@ -10,7 +10,7 @@ namespace Insurance.Domain.Model
     public class InsuranceCompany
     {
         [Key]
-        public int InsuranceCompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

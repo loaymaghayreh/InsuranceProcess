@@ -46,6 +46,8 @@ namespace Insurance.Repository.Migrations
 
                     b.HasKey("CustomerApplicationId");
 
+                    b.HasIndex("InsuranceCompanyId");
+
                     b.ToTable("CustomerApplications");
                 });
 
@@ -81,49 +83,49 @@ namespace Insurance.Repository.Migrations
 
             modelBuilder.Entity("Insurance.Domain.Model.DiagnosesCode", b =>
                 {
-                    b.Property<int>("DiagnosesCodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiagnosesCodeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discription")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DiagnosesCodeId");
+                    b.HasKey("Id");
 
                     b.ToTable("DiagnosesCodes");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.InsuranceCompany", b =>
                 {
-                    b.Property<int>("InsuranceCompanyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InsuranceCompanyId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CompanyName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("InsuranceCompanyId");
+                    b.HasKey("Id");
 
                     b.ToTable("InsuranceCompanies");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.PrescribedItem", b =>
                 {
-                    b.Property<int>("PrescribedItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrescribedItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -143,7 +145,7 @@ namespace Insurance.Repository.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("PrescribedItemId");
+                    b.HasKey("Id");
 
                     b.ToTable("PrescribedItems");
                 });
@@ -162,6 +164,17 @@ namespace Insurance.Repository.Migrations
                     b.HasKey("AttachmentId");
 
                     b.ToTable("PrescriptionAttachments");
+                });
+
+            modelBuilder.Entity("Insurance.Domain.Model.CustomerApplication", b =>
+                {
+                    b.HasOne("Insurance.Domain.Model.InsuranceCompany", "InsuranceCompany")
+                        .WithMany()
+                        .HasForeignKey("InsuranceCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceCompany");
                 });
 
             modelBuilder.Entity("Insurance.Domain.Model.CustomerApplicationDiagnosesCode", b =>

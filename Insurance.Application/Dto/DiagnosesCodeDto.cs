@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Domain.Dto
+namespace Insurance.Application.Dto
 {
     public class DiagnosesCodeDto
     {
-        public int DiagnosesCodeId { get; set; }
+        public int Id { get; set; }
         public string Code { get; set; }
-        public string Discription { get; set; }
+        public string Description { get; set; }
     }
 }

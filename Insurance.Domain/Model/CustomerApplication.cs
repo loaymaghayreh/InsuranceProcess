@@ -16,23 +16,13 @@ namespace Insurance.Domain.Model
         public int CustomerApplicationId { get; set; }
         [Required]
         public string NationalId { get; set; }
+        public int InsuranceCompanyId { get; set; }
+        public InsuranceCompany InsuranceCompany { get; set; }
         [Required]
         public string CustomerName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int InsuranceCompanyId { get; set; }
         public PrescriptionAttachment? Attachment { get; set; }
         public virtual ICollection<CustomerApplicationDiagnosesCode> CustomerApplicationDiagnosesCodes { get; set; } = new List<CustomerApplicationDiagnosesCode>();
         public virtual ICollection<CustomerApplicationPrescribedItem> CustomerApplicationPrescribedItems { get; set; } = new List<CustomerApplicationPrescribedItem>();
-/*
-        public CustomerApplication(string nationalId, string CustomerName ,DateTime dateOfBirth ,int insuranceCompanyId , List<int> diagnosesCodesId, List<int> prescribedItem, PrescriptionAttachment? attachment = null)
-        {
-            
-        }
-        public static CustomerApplication CreateAsync(string nationalId, string CustomerName, DateTime dateOfBirth, int insuranceCompanyId, List<int> diagnosesCodesId, List<int> prescribedItem, PrescriptionAttachment? attachment = null)
-        {
-            //validate Data
-
-            return new CustomerApplication();
-        }*/
     }
 }

@@ -6,59 +6,43 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Insurance.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class InitTable : Migration
+    public partial class InitTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CustomerApplications",
-                columns: table => new
-                {
-                    CustomerApplicationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InsuranceCompanyId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerApplications", x => x.CustomerApplicationId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DiagnosesCodes",
                 columns: table => new
                 {
-                    DiagnosesCodeId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiagnosesCodes", x => x.DiagnosesCodeId);
+                    table.PrimaryKey("PK_DiagnosesCodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "InsuranceCompanies",
                 columns: table => new
                 {
-                    InsuranceCompanyId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InsuranceCompanies", x => x.InsuranceCompanyId);
+                    table.PrimaryKey("PK_InsuranceCompanies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PrescribedItems",
                 columns: table => new
                 {
-                    PrescribedItemId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ItemNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -68,25 +52,29 @@ namespace Insurance.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrescribedItems", x => x.PrescribedItemId);
+                    table.PrimaryKey("PK_PrescribedItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PrescriptionAttachments",
+                name: "CustomerApplications",
                 columns: table => new
                 {
-                    AttachmentId = table.Column<int>(type: "int", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FileContent = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    CustomerApplicationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InsuranceCompanyId = table.Column<int>(type: "int", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrescriptionAttachments", x => x.AttachmentId);
+                    table.PrimaryKey("PK_CustomerApplications", x => x.CustomerApplicationId);
                     table.ForeignKey(
-                        name: "FK_PrescriptionAttachments_CustomerApplications_AttachmentId",
-                        column: x => x.AttachmentId,
-                        principalTable: "CustomerApplications",
-                        principalColumn: "CustomerApplicationId");
+                        name: "FK_CustomerApplications_InsuranceCompanies_InsuranceCompanyId",
+                        column: x => x.InsuranceCompanyId,
+                        principalTable: "InsuranceCompanies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,7 +97,7 @@ namespace Insurance.Repository.Migrations
                         name: "FK_CustomerApplicationDiagnosesCode_DiagnosesCodes_DiagnosesCodeId",
                         column: x => x.DiagnosesCodeId,
                         principalTable: "DiagnosesCodes",
-                        principalColumn: "DiagnosesCodeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -133,8 +121,26 @@ namespace Insurance.Repository.Migrations
                         name: "FK_CustomerApplicationPrescribedItem_PrescribedItems_PrescribedItemId",
                         column: x => x.PrescribedItemId,
                         principalTable: "PrescribedItems",
-                        principalColumn: "PrescribedItemId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrescriptionAttachments",
+                columns: table => new
+                {
+                    AttachmentId = table.Column<int>(type: "int", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileContent = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrescriptionAttachments", x => x.AttachmentId);
+                    table.ForeignKey(
+                        name: "FK_PrescriptionAttachments_CustomerApplications_AttachmentId",
+                        column: x => x.AttachmentId,
+                        principalTable: "CustomerApplications",
+                        principalColumn: "CustomerApplicationId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -146,6 +152,11 @@ namespace Insurance.Repository.Migrations
                 name: "IX_CustomerApplicationPrescribedItem_PrescribedItemId",
                 table: "CustomerApplicationPrescribedItem",
                 column: "PrescribedItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerApplications_InsuranceCompanyId",
+                table: "CustomerApplications",
+                column: "InsuranceCompanyId");
         }
 
         /// <inheritdoc />
@@ -158,9 +169,6 @@ namespace Insurance.Repository.Migrations
                 name: "CustomerApplicationPrescribedItem");
 
             migrationBuilder.DropTable(
-                name: "InsuranceCompanies");
-
-            migrationBuilder.DropTable(
                 name: "PrescriptionAttachments");
 
             migrationBuilder.DropTable(
@@ -171,6 +179,9 @@ namespace Insurance.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "CustomerApplications");
+
+            migrationBuilder.DropTable(
+                name: "InsuranceCompanies");
         }
     }
 }

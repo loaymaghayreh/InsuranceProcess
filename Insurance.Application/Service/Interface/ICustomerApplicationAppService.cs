@@ -1,4 +1,4 @@
-﻿using Insurance.Domain.Dto;
+﻿using Insurance.Application.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

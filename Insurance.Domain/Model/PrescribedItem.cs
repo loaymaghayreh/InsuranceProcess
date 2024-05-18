@@ -10,7 +10,7 @@ namespace Insurance.Domain.Model
     public class PrescribedItem
     {
         [Key]
-        public int PrescribedItemId { get; set; }
+        public int Id { get; set; }
         public string ItemNumber { get; set; }
         public string Description { get; set; }
         public int Quantity { get; set; }
